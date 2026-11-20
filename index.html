@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>something. — OLS</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="background-decoration"></div>
+
+  <audio id="music" loop>
+    <source src="see-you-again.mp3" type="audio/mpeg">
+  </audio>
+
+  <header>
+    <span class="brand">O L S</span>
+    <span class="header-line"></span>
+    <span class="edition">A PERSONAL ANNOUNCEMENT</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="small-heading">A MESSAGE FOR EVERYONE</p>
+      <h1>something<span>.</span></h1>
+      <div class="gold-line"></div>
+
+      <p class="from-to">
+        FROM <strong>ADMIN OLS</strong>
+        <span>✦</span>
+        TO <strong>ANAK-ANAK OLS</strong>
+      </p>
+
+      <div class="envelope-area" id="envelope">
+        <div class="envelope">
+          <div class="envelope-back"></div>
+          <div class="envelope-paper">
+            <span>a letter for you</span>
+          </div>
+          <div class="envelope-front"></div>
+          <div class="envelope-flap"></div>
+          <div class="seal">O</div>
+        </div>
+        <p class="open-text">TAP TO OPEN THE LETTER</p>
+      </div>
+
+      <p class="intro">
+        there is something we need to tell you.
+      </p>
+    </section>
+
+    <section class="letter-section" id="letterSection">
+      <div class="section-heading">
+        <span>01 — 03</span>
+        <div></div>
+        <span>A FINAL MESSAGE</span>
+      </div>
+
+      <div class="slide-container">
+        <article class="slide active">
+          <span class="slide-number">01</span>
+          <p class="slide-label">THE BEGINNING</p>
+          <h2>dear, everyone.</h2>
+          <div class="short-line"></div>
+          <p class="message">
+            hai guys, mungkin ini bakal jadi kabar yang buruk buat kalian para pengguna base ini. tapi setelah gw pertimbangan ini lumayan lama, udah mengambil keputusan ini dengan pasti dan gak ada pemikiran ulang lagi.
+          </p>
+        </article>
+
+        <article class="slide">
+          <span class="slide-number">02</span>
+          <p class="slide-label">A LITTLE THANK YOU</p>
+          <h2>thank you.</h2>
+          <div class="short-line"></div>
+          <p class="message">
+            thank u buat kalian yang udah percaya buat kirim menfess, terror, web di sini. berkat kalian base ini bisa berkembang. i'm so sorry kalo ada kata kata yang bikin kalian sakit hati atau yang kurang mengenakkan selama menggunakan base ini.
+          </p>
+        </article>
+
+        <article class="slide">
+          <span class="slide-number">03</span>
+          <p class="slide-label">UNTIL WE MEET AGAIN</p>
+          <h2>see you again.</h2>
+          <div class="short-line"></div>
+          <p class="message">
+            sorry guys, base ini akan diberhentikan untuk sementara (long rest) dengan waktu yang tidak bisa ditentukan. terimakasih sudah menggunakan base ini, mengikuti peraturan dengan baik. that's all, thank u.
+          </p>
+        </article>
+      </div>
+
+      <div class="navigation">
+        <button id="prevBtn" disabled>← PREVIOUS</button>
+        <div class="dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button id="nextBtn">NEXT →</button>
+      </div>
+    </section>
+
+    <section class="ending">
+      <div class="ending-line"></div>
+      <p class="ending-small">WITH LOVE,</p>
+      <h2>admin <span>OLS.</span></h2>
+      <p class="ending-message">
+        thank you for being a part of our little story.
+      </p>
+      <span class="ornament">✦</span>
+      <p class="copyright">SOMETHING. — OLS</p>
+    </section>
+  </main>
+
+  <button class="music-button" id="musicButton">
+    <span id="musicIcon">♫</span>
+    <span id="musicText">PLAY MUSIC</span>
+  </button>
+
+  <script>
+    const envelope = document.getElementById("envelope");
+    const letterSection = document.getElementById("letterSection");
+    const music = document.getElementById("music");
+    const musicButton = document.getElementById("musicButton");
+    const musicIcon = document.getElementById("musicIcon");
+    const musicText = document.getElementById("musicText");
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    envelope.addEventListener("click", () => {
+      envelope.classList.toggle("opened");
+
+      if (envelope.classList.contains("opened")) {
+        letterSection.classList.add("visible");
+
+        music.play().then(() => {
+          updateMusicButton(true);
+        }).catch(() => {
+          updateMusicButton(false);
+        });
+
+        setTimeout(() => {
+          letterSection.scrollIntoView({
+            behavior: "smooth"
+          });
+        }, 650);
+      }
+    });
+
+    function updateMusicButton(playing) {
+      musicIcon.textContent = playing ? "Ⅱ" : "♫";
+      musicText.textContent = playing ? "PAUSE MUSIC" : "PLAY MUSIC";
+    }
+
+    musicButton.addEventListener("click", () => {
+      if (music.paused) {
+        music.play().then(() => {
+          updateMusicButton(true);
+        }).catch(() => {
+          updateMusicButton(false);
+        });
+      } else {
+        music.pause();
+        updateMusicButton(false);
+      }
+    });
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+        dots[i].classList.toggle("active", i === index);
+      });
+
+      document.getElementById("prevBtn").disabled = index === 0;
+      document.getElementById("nextBtn").disabled =
+        index === slides.length - 1;
+
+      currentSlide = index;
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (currentSlide < slides.length - 1) {
+        showSlide(currentSlide + 1);
+      }
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentSlide > 0) {
+        showSlide(currentSlide - 1);
+      }
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => showSlide(index));
+    });
+
+    let touchStart = 0;
+
+    document.querySelector(".slide-container")
+      .addEventListener("touchstart", (e) => {
+        touchStart = e.changedTouches[0].screenX;
+      });
+
+    document.querySelector(".slide-container")
+      .addEventListener("touchend", (e) => {
+        const touchEnd = e.changedTouches[0].screenX;
+        const difference = touchStart - touchEnd;
+
+        if (difference > 50 && currentSlide < slides.length - 1) {
+          showSlide(currentSlide + 1);
+        } else if (difference < -50 && currentSlide > 0) {
+          showSlide(currentSlide - 1);
+        }
+      });
+  </script>
+
+</body>
+</html>
